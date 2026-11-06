@@ -1,0 +1,10 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.pytest_cache/
+output/*
+!output/.gitkeep
+examples/example-project/raw/
+examples/example-project/final/

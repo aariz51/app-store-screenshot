@@ -1,0 +1,121 @@
+{
+ "app": {
+  "name": "Your App",
+  "icon": "optional/path/to/icon.png"
+ },
+ "platforms": {
+  "iphone": {
+   "device": "iphone",
+   "canvas": [
+    1320,
+    2868
+   ],
+   "raw_dir": "raw/iphone"
+  },
+  "android": {
+   "device": "android",
+   "canvas": [
+    1080,
+    1920
+   ],
+   "raw_dir": "raw/android",
+   "blur": {}
+  }
+ },
+ "messages": [
+  {
+   "id": "promise",
+   "kind": "hero",
+   "headline": "Your core promise here",
+   "key": "promise",
+   "sub": "One supporting line.",
+   "ui": {
+    "iphone": {
+     "screen": "home",
+     "card": {
+      "box": [
+       0,
+       0,
+       100,
+       100
+      ],
+      "radius": 32
+     },
+     "strip": {
+      "box": [
+       0,
+       0,
+       100,
+       100
+      ],
+      "radius": 24
+     }
+    }
+   }
+  },
+  {
+   "id": "action",
+   "kind": "detail",
+   "headline": "The primary action",
+   "key": "action",
+   "sub": "What the user does every day.",
+   "ui": {
+    "iphone": {
+     "screen": "editor",
+     "callout": {
+      "box": [
+       0,
+       0,
+       100,
+       100
+      ],
+      "radius": 28
+     }
+    }
+   }
+  },
+  {
+   "id": "feature",
+   "kind": "feature",
+   "headline": "A differentiating feature",
+   "key": "feature",
+   "sub": "Why it matters.",
+   "ui": {
+    "iphone": {
+     "screen": "feature",
+     "callout": {
+      "box": [
+       0,
+       0,
+       100,
+       100
+      ],
+      "radius": 24
+     }
+    }
+   }
+  },
+  {
+   "id": "output",
+   "kind": "output",
+   "headline": "What you get out",
+   "key": "get",
+   "sub": "Formats or results.",
+   "badges": [],
+   "ui": {
+    "iphone": {
+     "screen": "export",
+     "callout": {
+      "box": [
+       0,
+       0,
+       100,
+       100
+      ],
+      "radius": 28
+     }
+    }
+   }
+  }
+ ]
+}

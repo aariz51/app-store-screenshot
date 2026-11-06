@@ -1,0 +1,848 @@
+{
+ "app": {
+  "name": "AutoCaption",
+  "note": "Example config used to produce the gallery. Raw captures are not distributed; put your own in raw/iphone and raw/android."
+ },
+ "platforms": {
+  "iphone": {
+   "device": "iphone",
+   "canvas": [
+    1320,
+    2868
+   ],
+   "raw_dir": "raw/iphone"
+  },
+  "android": {
+   "device": "android",
+   "canvas": [
+    1080,
+    1920
+   ],
+   "raw_dir": "raw/android",
+   "blur": {
+    "broll": [
+     [
+      48,
+      1474,
+      568,
+      1622
+     ]
+    ],
+    "export": [
+     [
+      48,
+      1474,
+      568,
+      1622
+     ]
+    ]
+   }
+  }
+ },
+ "messages": [
+  {
+   "id": "captions",
+   "kind": "hero",
+   "headline": "Auto captions for any video",
+   "key": "captions",
+   "sub": "Every word timed to your voice.",
+   "copy": {
+    "warm-premium": [
+     [
+      [
+       "Auto captions",
+       null
+      ]
+     ],
+     [
+      [
+       "for any video.",
+       null
+      ]
+     ]
+    ],
+    "bold-blue": [
+     {
+      "spans": [
+       [
+        "Auto",
+        null
+       ]
+      ],
+      "scale": 1.0
+     },
+     {
+      "spans": [
+       [
+        "captions",
+        "stk"
+       ]
+      ],
+      "scale": 1.18
+     },
+     {
+      "spans": [
+       [
+        "for any video",
+        null
+       ]
+      ],
+      "scale": 0.52
+     }
+    ],
+    "feature-led": {
+     "big": "AUTO CAPTIONS",
+     "small": "FOR ANY VIDEO"
+    },
+    "dark-neon": [
+     [
+      [
+       "AUTO ",
+       "k"
+      ],
+      [
+       "CAPTIONS.",
+       null
+      ]
+     ],
+     [
+      [
+       "ANY VIDEO.",
+       null
+      ]
+     ]
+    ]
+   },
+   "ui": {
+    "iphone": {
+     "screen": "captions-playing",
+     "card": {
+      "file": "captions-playing",
+      "box": [
+       396,
+       414,
+       924,
+       1350
+      ],
+      "radius": 40
+     },
+     "strip": {
+      "file": "transcript",
+      "box": [
+       48,
+       2185,
+       1273,
+       2500
+      ],
+      "radius": 28
+     },
+     "frames": [
+      {
+       "file": "behind-c",
+       "box": [
+        396,
+        414,
+        924,
+        1350
+       ]
+      },
+      {
+       "file": "behind-a",
+       "box": [
+        396,
+        414,
+        924,
+        1350
+       ]
+      },
+      {
+       "file": "captions-playing",
+       "box": [
+        396,
+        414,
+        924,
+        1350
+       ]
+      }
+     ]
+    },
+    "android": {
+     "screen": "broll",
+     "card": {
+      "box": [
+       380,
+       384,
+       904,
+       1316
+      ],
+      "radius": 36
+     },
+     "strip": {
+      "file": "edit-words",
+      "box": [
+       50,
+       1252,
+       1230,
+       1530
+      ],
+      "radius": 26
+     }
+    }
+   }
+  },
+  {
+   "id": "edit",
+   "kind": "detail",
+   "headline": "Fix any word in one tap",
+   "key": "word",
+   "sub": "Tap a line and change any word.",
+   "copy": {
+    "warm-premium": [
+     [
+      [
+       "Fix any word",
+       null
+      ]
+     ],
+     [
+      [
+       "in one tap.",
+       null
+      ]
+     ]
+    ],
+    "bold-blue": [
+     {
+      "spans": [
+       [
+        "Fix any",
+        null
+       ]
+      ],
+      "scale": 0.62
+     },
+     {
+      "spans": [
+       [
+        "word",
+        "stk"
+       ]
+      ],
+      "scale": 1.25
+     },
+     {
+      "spans": [
+       [
+        "in one tap",
+        null
+       ]
+      ],
+      "scale": 0.62
+     }
+    ],
+    "dark-neon": [
+     [
+      [
+       "EVERY ",
+       null
+      ],
+      [
+       "WORD.",
+       "k"
+      ]
+     ],
+     [
+      [
+       "YOURS TO FIX.",
+       null
+      ]
+     ]
+    ]
+   },
+   "ui": {
+    "iphone": {
+     "screen": "transcript",
+     "callout": {
+      "file": "edit-words",
+      "box": [
+       48,
+       1258,
+       1273,
+       1640
+      ],
+      "radius": 30
+     },
+     "anchor": [
+      48,
+      1508,
+      1273,
+      1823
+     ],
+     "rows": {
+      "file": "transcript",
+      "box": [
+       48,
+       1192,
+       1273,
+       2510
+      ],
+      "radius": 24
+     }
+    },
+    "android": {
+     "screen": "edit-words",
+     "callout": {
+      "box": [
+       50,
+       1612,
+       1230,
+       1972
+      ],
+      "radius": 28
+     },
+     "anchor": [
+      50,
+      1700,
+      1230,
+      2260
+     ],
+     "rows": {
+      "box": [
+       50,
+       1252,
+       1230,
+       1530
+      ],
+      "radius": 24
+     }
+    }
+   }
+  },
+  {
+   "id": "styles",
+   "kind": "catalogue",
+   "headline": "200+ caption styles",
+   "key": "200+",
+   "sub": "Tap a look and see it on your own video.",
+   "copy": {
+    "warm-premium": [
+     [
+      [
+       "200+",
+       "k"
+      ],
+      [
+       " caption",
+       null
+      ]
+     ],
+     [
+      [
+       "styles.",
+       null
+      ]
+     ]
+    ],
+    "bold-blue": [
+     {
+      "spans": [
+       [
+        "200+",
+        "pill"
+       ]
+      ],
+      "scale": 1.15
+     },
+     {
+      "spans": [
+       [
+        "caption styles",
+        null
+       ]
+      ],
+      "scale": 0.66
+     }
+    ],
+    "feature-led": {
+     "big": "200+ STYLES",
+     "small": "ON YOUR OWN VIDEO"
+    },
+    "dark-neon": [
+     [
+      [
+       "200+ ",
+       "k"
+      ],
+      [
+       "STYLES.",
+       null
+      ]
+     ],
+     [
+      [
+       "ONE TAP.",
+       null
+      ]
+     ]
+    ]
+   },
+   "ui": {
+    "iphone": {
+     "screen": "styles",
+     "callout": {
+      "box": [
+       92,
+       720,
+       648,
+       1068
+      ],
+      "radius": 34
+     },
+     "anchor": [
+      92,
+      720,
+      648,
+      1068
+     ],
+     "tiles": [
+      [
+       92,
+       720,
+       648,
+       1068
+      ],
+      [
+       672,
+       720,
+       1227,
+       1068
+      ],
+      [
+       92,
+       1093,
+       648,
+       1438
+      ],
+      [
+       672,
+       1093,
+       1227,
+       1438
+      ],
+      [
+       92,
+       1464,
+       648,
+       1809
+      ],
+      [
+       672,
+       1464,
+       1227,
+       1809
+      ],
+      [
+       92,
+       1837,
+       648,
+       2181
+      ],
+      [
+       672,
+       1837,
+       1227,
+       2181
+      ],
+      [
+       92,
+       2208,
+       648,
+       2552
+      ],
+      [
+       672,
+       2208,
+       1227,
+       2552
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "id": "broll",
+   "kind": "feature",
+   "headline": "B-roll, added for you",
+   "key": "added",
+   "sub": "Cutaways picked from what you say.",
+   "copy": {
+    "warm-premium": [
+     [
+      [
+       "B-roll,",
+       null
+      ]
+     ],
+     [
+      [
+       "added",
+       "k"
+      ],
+      [
+       " for you.",
+       null
+      ]
+     ]
+    ],
+    "bold-blue": [
+     {
+      "spans": [
+       [
+        "B-roll",
+        "pill"
+       ]
+      ],
+      "scale": 0.9
+     },
+     {
+      "spans": [
+       [
+        "added for you",
+        null
+       ]
+      ],
+      "scale": 0.78
+     }
+    ],
+    "feature-led": {
+     "big": "B-ROLL, ADDED",
+     "small": "PICKED FROM WHAT YOU SAY"
+    },
+    "dark-neon": [
+     [
+      [
+       "B-ROLL.",
+       "k"
+      ]
+     ],
+     [
+      [
+       "ADDED FOR YOU.",
+       null
+      ]
+     ]
+    ],
+    "minimal-editorial": [
+     [
+      [
+       "B-ROLL, ",
+       null
+      ],
+      [
+       "ADDED",
+       "k"
+      ]
+     ],
+     [
+      [
+       "FOR YOU",
+       null
+      ]
+     ]
+    ]
+   },
+   "ui": {
+    "iphone": {
+     "screen": "broll",
+     "callout": {
+      "box": [
+       60,
+       2350,
+       1260,
+       2520
+      ],
+      "radius": 26
+     },
+     "chip": {
+      "box": [
+       48,
+       425,
+       1273,
+       690
+      ],
+      "radius": 24
+     },
+     "lens": [
+      470,
+      560,
+      980,
+      730
+     ]
+    },
+    "android": {
+     "screen": "broll",
+     "callout": {
+      "box": [
+       40,
+       1630,
+       1240,
+       1736
+      ],
+      "radius": 24
+     },
+     "lens": [
+      400,
+      1620,
+      880,
+      1760
+     ]
+    }
+   }
+  },
+  {
+   "id": "languages",
+   "kind": "list",
+   "headline": "Captions in 50+ languages",
+   "key": "50+",
+   "sub": "Including Roman Urdu and Hinglish.",
+   "copy": {
+    "warm-premium": [
+     [
+      [
+       "Captions in",
+       null
+      ]
+     ],
+     [
+      [
+       "50+ languages.",
+       null
+      ]
+     ]
+    ],
+    "bold-blue": [
+     {
+      "spans": [
+       [
+        "Captions in",
+        null
+       ]
+      ],
+      "scale": 0.55
+     },
+     {
+      "spans": [
+       [
+        "50+",
+        "stk"
+       ]
+      ],
+      "scale": 1.3
+     },
+     {
+      "spans": [
+       [
+        "languages",
+        null
+       ]
+      ],
+      "scale": 0.7
+     }
+    ],
+    "feature-led": {
+     "big": "50+ LANGUAGES",
+     "small": "INCLUDING ROMAN URDU & HINGLISH"
+    },
+    "dark-neon": [
+     [
+      [
+       "50+ ",
+       "k"
+      ],
+      [
+       "LANGUAGES.",
+       null
+      ]
+     ],
+     [
+      [
+       "ROMAN URDU TOO.",
+       null
+      ]
+     ]
+    ],
+    "minimal-editorial": [
+     [
+      [
+       "CAPTIONS IN ",
+       null
+      ],
+      [
+       "50+",
+       "k"
+      ]
+     ],
+     [
+      [
+       "LANGUAGES",
+       null
+      ]
+     ]
+    ]
+   },
+   "ui": {
+    "iphone": {
+     "screen": "languages",
+     "callout": {
+      "box": [
+       287,
+       867,
+       1033,
+       2425
+      ],
+      "radius": 58
+     },
+     "top": {
+      "box": [
+       287,
+       867,
+       1033,
+       1300
+      ],
+      "radius": 40
+     }
+    },
+    "android": {
+     "screen": "languages",
+     "callout": {
+      "box": [
+       80,
+       208,
+       1200,
+       792
+      ],
+      "radius": 20
+     },
+     "top": {
+      "box": [
+       80,
+       208,
+       1200,
+       792
+      ],
+      "radius": 20
+     }
+    }
+   }
+  },
+  {
+   "id": "export",
+   "kind": "output",
+   "headline": "Export video or subtitles",
+   "key": "video",
+   "sub": "Burned-in captions, SRT or VTT files.",
+   "badges": [
+    "SRT",
+    "VTT",
+    "▶"
+   ],
+   "copy": {
+    "warm-premium": [
+     [
+      [
+       "Export",
+       "k"
+      ],
+      [
+       " video",
+       null
+      ]
+     ],
+     [
+      [
+       "or subtitles.",
+       null
+      ]
+     ]
+    ],
+    "bold-blue": [
+     {
+      "spans": [
+       [
+        "Export",
+        null
+       ]
+      ],
+      "scale": 1.0
+     },
+     {
+      "spans": [
+       [
+        "video or",
+        null
+       ]
+      ],
+      "scale": 0.6
+     },
+     {
+      "spans": [
+       [
+        "subtitles",
+        "stk"
+       ]
+      ],
+      "scale": 0.95
+     }
+    ],
+    "feature-led": {
+     "big": "EXPORT VIDEO",
+     "small": "OR SRT & VTT SUBTITLES"
+    },
+    "dark-neon": [
+     [
+      [
+       "VIDEO. SRT.",
+       null
+      ]
+     ],
+     [
+      [
+       "VTT. ",
+       null
+      ],
+      [
+       "YOURS.",
+       "k"
+      ]
+     ]
+    ]
+   },
+   "ui": {
+    "iphone": {
+     "screen": "export",
+     "callout": {
+      "box": [
+       312,
+       372,
+       1271,
+       1356
+      ],
+      "radius": 34
+     }
+    },
+    "android": {
+     "screen": "export",
+     "callout": {
+      "box": [
+       272,
+       340,
+       1236,
+       1336
+      ],
+      "radius": 30
+     }
+    }
+   }
+  }
+ ]
+}

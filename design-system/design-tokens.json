@@ -1,0 +1,83 @@
+{
+  "_about": "Reusable token system (Deliverable 8). Units: cw = % of canvas width, ch = % of canvas height, px values at the 1320x2868 base. Values derived from references are estimates (see 01-reference-reports.md). Every 'brand.*' value is supplied per app; archetype presets only fill gaps.",
+  "canvas": {
+    "ios_6_9": { "w": 1320, "h": 2868, "alt_accepted": [[1290, 2796], [1260, 2736]] },
+    "ios_6_5": { "w": 1284, "h": 2778, "alt_accepted": [[1242, 2688]] },
+    "ipad_13": { "w": 2064, "h": 2752, "alt_accepted": [[2048, 2732]] },
+    "play_phone": { "w": 1080, "h": 2340, "rule": "16:9..9:20, 320-3840px each side, 24-bit PNG/JPEG, no alpha" },
+    "export": { "format": "PNG", "color": "sRGB", "alpha": false, "_note": "verify current App Store Connect size list before each delivery" }
+  },
+  "brand": {
+    "primary": null, "primary_grad_top": null, "primary_grad_bottom": null,
+    "neutral_field": null, "ink": null, "accent_2": null,
+    "semantic_positive": "#22A06B", "semantic_negative": "#E5484D",
+    "font_display": null, "font_text": null
+  },
+  "derive": {
+    "primary_grad_top": "primary lightened L* +4",
+    "primary_grad_bottom": "primary darkened L* -2",
+    "shadow_tint": "primary hue, L* 20, alpha 0.10 (light fields) — never neutral grey on coloured fields",
+    "glow": "accent at alpha 0.55, blur 6cw (dark fields only)"
+  },
+  "spacing": {
+    "safe_inset": "6cw",
+    "text_margin_x": { "left_aligned": "12cw", "centred": "8cw" },
+    "headline_top": "6.5ch",
+    "headline_to_sub": "1.6ch",
+    "text_to_device": "3ch",
+    "bento_gap": "2cw",
+    "showcase_gutter": "2.9cw (presentation only)"
+  },
+  "type": {
+    "headline": {
+      "weight": "800-900", "tracking": "-0.02em to -0.035em", "leading": 0.95,
+      "size_by_case": {
+        "title_case_heavy": "15-17cw (approx 200-225px)",
+        "all_caps_condensed": "17-22cw cap-to-cap; cap height ~7ch",
+        "editorial_caps_small": "8-9cw (bento-led tiles)",
+        "sentence_rounded": "10-12cw; lead-in line at 0.45x"
+      },
+      "max_lines": { "title_case": 3, "caps_condensed": 3, "rounded": 2 },
+      "max_words": 6,
+      "two_tone": "exactly one word or line in brand.primary"
+    },
+    "sub": { "weight": "400-500", "size": "0.28-0.32x headline cap height (approx 52-60px)", "max_lines": 2, "color": "ink at 85% or white at 90%" },
+    "min_legible_at_thumbnail": "headline cap height >= 4.5ch so it survives a ~1/6 search-result downscale"
+  },
+  "radii": {
+    "device_screen": "11.5cw of device width (approx 13% for modern iPhone frames)",
+    "card_large": "4.5cw", "card_small": "3cw", "pill": "999px",
+    "showcase_tile": "7-12cw (presentation only, never exported)"
+  },
+  "shadows": {
+    "card_on_light": "0 2.4cw 6cw shadow_tint@0.10, 0 0.4cw 1.2cw shadow_tint@0.06",
+    "device_on_light": "0 3cw 9cw shadow_tint@0.18",
+    "card_on_colour": "0 2cw 5cw primary_dark@0.25",
+    "dark_field": "no drop shadow; use 1-2px accent stroke + glow"
+  },
+  "gradients": {
+    "field_vertical": "linear 180deg primary_grad_top -> primary_grad_bottom (delta L* 5-7)",
+    "field_vignette": "radial at 50% 40%, primary -> primary darkened L* -6 at edges",
+    "dark_blob": "radial accent@0.35 -> transparent, 40-60cw diameter, blur 10cw"
+  },
+  "device": {
+    "frame": "modern iPhone with Dynamic Island, thin black bezel, titanium rim; use Apple's official product images / Design Resources or a licensed mockup",
+    "scale": { "default": "82-86cw", "hero_panorama": "140-170cw", "hand_held": "70-78cw", "secondary_in_multi": "0.85x of primary" },
+    "rotation_deg": { "default": 0, "hero": [-12, -6], "hand_held": [-14, -8], "floating_card": [-3, 3] },
+    "crop": { "bottom_bleed_visible": "60-75% of device height", "top_bleed_visible": "55-70%" }
+  },
+  "callout": {
+    "scale_vs_in_device": [1.1, 1.25],
+    "width": "up to 94cw (wider than device)",
+    "rule": "complete component edge to edge, pixel-identical to real UI, never retyped with different data"
+  },
+  "icons": { "decorative_3d": "max 3 per tile, in rounded-square plates 14-18cw, tilt +-10-15deg", "inline_emoji": "ARC-2 only" },
+  "presets": {
+    "ARC-1": { "field": "field_vertical + cream alt", "align": "left", "case": "title", "font_hint": ["Archivo SemiCondensed ExtraBold", "Inter Tight ExtraBold"] },
+    "ARC-2": { "field": "saturated primary + white rest", "align": "center", "case": "title", "font_hint": ["Lilita One", "Baloo 2 ExtraBold", "Fredoka Bold"] },
+    "ARC-3": { "field": "single saturated + vignette", "align": "center", "case": "caps", "font_hint": ["Anton", "Oswald Bold", "Barlow Condensed ExtraBold"] },
+    "ARC-4": { "field": "#100E14-ish tinted black + glow blobs", "align": "left", "case": "caps+periods", "font_hint": ["Anton", "Big Shoulders Display Black"] },
+    "ARC-5": { "field": "light neutral #F4F6F7-ish", "align": "center", "case": "caps", "font_hint": ["Anton", "Archivo ExtraCondensed Black"] },
+    "ARC-6": { "field": "hero colour tile 1 only, then white", "align": "center", "case": "sentence", "font_hint": ["Nunito ExtraBold", "Plus Jakarta Sans ExtraBold"] }
+  }
+}

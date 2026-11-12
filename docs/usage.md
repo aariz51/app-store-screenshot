@@ -2,7 +2,7 @@
 
 ## With the slash command (recommended)
 
-Run `/app-store-screenshots` in Claude Code from the root of an app repository. Optional arguments: a style name or `all`, then `iphone`, `android` or `both`.
+Run `/app-store-screenshots` in Claude Code from the root of an app repository. Optional argument: `iphone`, `android` or `both`. All five styles are always rendered.
 
 **Example 1: the repo already has screenshots.** The agent runs `discover`, opens the candidates, and says which it will use. It builds `store-assets/project.json`, writes the storyboard, and renders all five styles.
 

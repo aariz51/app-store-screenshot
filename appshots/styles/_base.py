@@ -35,3 +35,28 @@ def default_two_tone(m, upper=False, period=False):
 def region(project, plat, spec):
     """spec (file, box, radius) -> (PIL image, box, radius)."""
     return project.screen(plat, spec[0]), spec[1], spec[2]
+
+
+def key_spans(m, upper=False, period=False, prefix=None):
+    """The headline as one flat span list with the key phrase tagged 'k' (for fit_wrap)."""
+    head = m["headline"].upper() if upper else m["headline"]
+    if period and not head.rstrip().endswith((".", "!", "?")):
+        head = head.rstrip() + "."
+    key = m.get("key", "")
+    key = key.upper() if upper else key
+    sp = tag_key(head, key)
+    if prefix:
+        sp = [(prefix + " ", None)] + sp
+    return sp
+
+
+def flat_override(project, style, m):
+    """A copy override flattened back to spans so it can be re-wrapped at the style's size."""
+    o = override_lines(project, style, m)
+    if not o:
+        return None
+    out = []
+    for sp, _ in o:
+        for t, g in sp:
+            out.append((t if t.endswith(" ") else t + " ", g))
+    return out

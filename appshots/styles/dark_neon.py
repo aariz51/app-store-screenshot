@@ -6,7 +6,7 @@ phone swap top/bottom every tile (zig-zag). Depth from emitted light: real UI
 cards get a 1-2 px neon outline and an outer glow; no drop shadows.
 """
 from .. import engine as E
-from ._base import default_two_tone, override_lines, unit
+from ._base import flat_override, key_spans, unit
 
 NAME = "dark-neon"
 TITLE = "Dark Neon"
@@ -15,7 +15,7 @@ P = dict(bg=("#16131C", "#09080C"), lime="#C8FC49", pink="#EE3497", purple="#7B4
 
 
 def copy(project, m):
-    return override_lines(project, NAME, m) or default_two_tone(m, upper=True, period=True)
+    return flat_override(project, NAME, m) or key_spans(m, upper=True, period=True)
 
 
 def tile(project, plat, m, idx):
@@ -30,7 +30,7 @@ def tile(project, plat, m, idx):
     dev, geo = E.device(project.device_kind(plat), project.screen(plat, u["screen"]), W * 0.84 * dk)
     lines = copy(project, m)
     if top_text:
-        b = E.text(cv, lines, "anton", 230 * s, W * 0.07, H * 0.06, W * 0.86, lh=0.92, accent=acc)
+        b = E.headline(cv, lines, "anton", 262 * s, W * 0.07, H * 0.06, W * 0.86, max_lines=3, lh=0.9, accent=acc)
         b = E.para(cv, project.sub(m), "manrope-md", 44 * s, W * 0.07, b + 26 * s, W * 0.8, P["grey"])
         dx, dy = (W - dev.width) / 2, b + H * 0.05
     else:
@@ -49,7 +49,7 @@ def tile(project, plat, m, idx):
     y = min(max(y, H * 0.03), (H * 0.60 if not top_text else H * 0.96) - c.height)
     E.glow_paste(cv, c, ((W - c.width) / 2 + (W * 0.04 if top_text else -W * 0.04), y), acc, 0.55, 26 * s)
     if not top_text:
-        b = E.text(cv, lines, "anton", 230 * s, W * 0.07, H * 0.68, W * 0.86, lh=0.92, accent=acc)
+        b = E.headline(cv, lines, "anton", 262 * s, W * 0.07, H * 0.66, W * 0.86, max_lines=3, lh=0.9, accent=acc)
         E.para(cv, project.sub(m), "manrope-md", 44 * s, W * 0.07, b + 26 * s, W * 0.8, P["grey"])
     E.grain(cv, 5)
     return cv

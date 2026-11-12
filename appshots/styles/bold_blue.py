@@ -59,7 +59,7 @@ def tile(project, plat, m, idx):
                pill=("#FFFFFF", P["blue_k"]) if blue else (P["blue_k"], "#FFFFFF"))
     b = E.para(cv, project.sub(m), "manrope-sb", 46 * s, W * 0.1, b + 26 * s, W * 0.8, "#E8F2FF" if blue else "#41557A", align="center")
     E.sparkle(cv, W * 0.88, H * 0.05, 46 * s, P["gold"])
-    E.sparkle(cv, W * 0.11, b - 10 * s, 28 * s, "#FFFFFF" if blue else P["gold"])
+    E.sparkle(cv, W * 0.11, b + 34 * s, 28 * s, "#FFFFFF" if blue else P["gold"])
     dev, geo = E.device(project.device_kind(plat), project.screen(plat, u["screen"]), W * 0.80 * dk)
     dx, dy = (W - dev.width) / 2, b + H * 0.05
     E.drop(cv, dev, (dx, dy), "#0B3E91" if blue else "#5C7BB0", 0.30, 50 * s, (0, 36 * s))
@@ -73,6 +73,7 @@ def tile(project, plat, m, idx):
     c = E.crop_card(project.screen(plat, spec[0]), spec[1], spec[2], (1.0 if kind == "list" else 1.22) * dk, W * 1.02,
                     rot=(-5 if kind in ("hero", "feature") else 4))
     x = cx - c.width / 2 + (W * 0.10 if kind in ("detail", "output") else -W * 0.08)
+    x = (W - c.width) / 2 if c.width >= W else min(max(x, 0), W - c.width)  # break the phone edge, never the canvas edge
     y = min(max(cy - c.height / 2, b + H * 0.02), H * 0.97 - c.height)
     if kind == "hero":
         y = dy + H * 0.36

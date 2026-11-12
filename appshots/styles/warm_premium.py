@@ -8,7 +8,7 @@ phone. Phones bleed off the top or bottom. Shadows are warm-tinted, never grey.
 from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 from .. import engine as E
-from ._base import default_two_tone, override_lines, region, unit
+from ._base import flat_override, key_spans, region, unit
 
 NAME = "warm-premium"
 TITLE = "Warm Premium"
@@ -18,7 +18,7 @@ FIELD = {"hero": "coral", "detail": "cream", "catalogue": "cream", "feature": "c
 
 
 def copy(project, m):
-    return override_lines(project, NAME, m) or default_two_tone(m, period=True)
+    return flat_override(project, NAME, m) or key_spans(m, period=True)
 
 
 def bg(W, H, field):
@@ -30,9 +30,10 @@ def bg(W, H, field):
 
 def head(cv, project, m, field, x, y, maxw, s):
     on = field == "coral"
-    b = E.text(cv, copy(project, m), "manrope", 168 * s, x, y, maxw, lh=1.02,
-               color="#FFFFFF" if on else P["ink"], accent="#FFFFFF" if on else P["orange"])
-    return E.para(cv, project.sub(m), "manrope-md", 52 * s, x, b + 30 * s, maxw * 0.9, "#FFF4EC" if on else "#5B524D")
+    # reference A: heavy narrow grotesk, ~240 px line pitch at 2868 tall, tight leading, short lines
+    b = E.headline(cv, copy(project, m), "archivo-sc", 232 * s, x, y, maxw, max_lines=3, lh=1.0,
+                   color="#FFFFFF" if on else P["ink"], accent="#FFFFFF" if on else P["orange"])
+    return E.para(cv, project.sub(m), "manrope-sb", 54 * s, x, b + 34 * s, maxw * 0.92, "#FFF4EC" if on else "#5B524D")
 
 
 def card(project, plat, spec, scale, maxw, **kw):
@@ -62,8 +63,8 @@ def panorama(project, plat, m1, m2):
     # tile 2: caption band under the oversized phone (reference A tile 2)
     t2 = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(t2).rectangle([0, H * 0.80, W, H], fill=E.hx(P["coral"][1]))
-    yb = E.text(t2, copy(project, m2), "manrope", 120 * s, W * 0.1, H * 0.835, W * 0.8, align="center", lh=1.02,
-                color="#FFFFFF", accent="#FFFFFF")
+    yb = E.headline(t2, copy(project, m2), "archivo-sc", 120 * s, W * 0.1, H * 0.835, W * 0.8, max_lines=2, align="center", lh=1.0,
+                    color="#FFFFFF", accent="#FFFFFF")
     E.para(t2, project.sub(m2), "manrope-md", 46 * s, W * 0.1, yb + 22 * s, W * 0.8, "#FFF4EC", align="center")
     fade = Image.new("L", (W, H), 0)
     ImageDraw.Draw(fade).rectangle([0, H * 0.80, W, H], fill=255)

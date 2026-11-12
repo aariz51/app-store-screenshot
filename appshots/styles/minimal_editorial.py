@@ -8,7 +8,7 @@ are a clean centred phone, bottom-cropped, with no ornament.
 from PIL import Image, ImageDraw
 
 from .. import engine as E
-from ._base import default_two_tone, override_lines, unit
+from ._base import flat_override, key_spans, unit
 
 NAME = "minimal-editorial"
 TITLE = "Minimal Editorial"
@@ -17,7 +17,7 @@ P = dict(bg="#F4F5F7", lav="#F1ECF4", ink="#101114", blue="#2198E3", mag="#B7396
 
 
 def copy(project, m):
-    return override_lines(project, NAME, m) or default_two_tone(m, upper=True)
+    return flat_override(project, NAME, m) or key_spans(m, upper=True)
 
 
 def cell(cv, box, s, fill=None):
@@ -36,9 +36,9 @@ def tile(project, plat, m, idx):
     g = W * 0.035
     lines = copy(project, m)
 
-    def head(y):
-        ImageDraw.Draw(cv).text((W / 2, y), f"{idx + 1:02d}", font=E.font("manrope-sb", 40 * s), fill=E.hx("#8C909A"), anchor="mt")
-        b = E.text(cv, lines, "barlow", 180 * s, W * 0.08, y + 70 * s, W * 0.84, align="center", lh=0.94, color=P["ink"], accent=acc)
+    def head(y, step=None):
+        sp = ([(f"{step}. ", None)] + lines) if step else lines   # reference E: "1. FIND WHAT YOU LIKE"
+        b = E.headline(cv, sp, "barlow", 200 * s, W * 0.07, y + 24 * s, W * 0.86, max_lines=3, align="center", lh=0.92, color=P["ink"], accent=acc)
         return E.para(cv, project.sub(m), "manrope-md", 42 * s, W * 0.12, b + 22 * s, W * 0.76, "#5A5E68", align="center")
 
     def crop(spec, scale, maxw, **kw):
@@ -49,10 +49,10 @@ def tile(project, plat, m, idx):
         fr = u["frames"]
         n = len(fr)
         for i, (f, box) in enumerate(fr[:3]):
-            c = crop((f, box, 40), 0.92 * dk, W * 0.5, rot=[8, -8, 0][i] if n == 3 else -3)
+            c = crop((f, box, 40), 0.92 * dk, W * (0.5 if n == 3 else 0.62), rot=[8, -8, 0][i] if n == 3 else -3)
             ox = [-0.20, 0.20, 0.0][i] if n == 3 else 0
             E.drop(cv, c, (W / 2 - c.width / 2 + W * ox, H * 0.05 + (0 if i == min(n, 3) - 1 else H * 0.03)), "#4A3A5C", 0.22, 30 * s, (0, 20 * s))
-        E.text(cv, lines, "barlow", 160 * s, W * 0.08, H * 0.54, W * 0.84, align="center", lh=0.94, color=P["ink"], accent=acc)
+        E.headline(cv, lines, "barlow", 190 * s, W * 0.07, H * 0.52, W * 0.86, max_lines=3, align="center", lh=0.92, color=P["ink"], accent=acc)
         bot = (g, H * 0.70 + g, W - g, H - g)
         cell(cv, bot, s)
         mid_y = (bot[1] + bot[3]) / 2
@@ -65,10 +65,13 @@ def tile(project, plat, m, idx):
         b = head(H * 0.04)
         y0 = b + H * 0.03
         if kind == "detail":
-            a = (g, y0, W - g, y0 + (H - y0) * (0.36 if "rows" in u else 0.6))
+            c = crop(u["callout"], 1.0 * dk, (W - 2 * g) * 0.9, hair=False)
+            a = (g, y0, W - g, y0 + c.height + 2 * W * (0.06 if "rows" in u else 0.08))
             cell(cv, a, s)
-            c = crop(u["callout"], 1.0 * dk, (a[2] - a[0]) * 0.9, hair=False)
             E.paste_any(cv, c, (int(W / 2 - c.width / 2), int((a[1] + a[3]) / 2 - c.height / 2)))
+            if "rows" not in u:  # no second cell: the real screen continues below, bottom-cropped
+                dev, _ = E.device(project.device_kind(plat), project.screen(plat, u["screen"]), W * 0.80 * dk)
+                E.drop(cv, dev, ((W - dev.width) / 2, a[3] + H * 0.035), P["shadow"], 0.18, 40 * s, (0, 24 * s))
             if "rows" in u:
                 bb = (g, a[3] + g, W - g, H - g)
                 cell(cv, bb, s)
@@ -86,8 +89,9 @@ def tile(project, plat, m, idx):
                 t = t.resize((int(cw), int(ch)), Image.LANCZOS).convert("RGBA")
                 t.putalpha(E.rounded_mask(t.size, int(40 * s)))
                 E.drop(cv, t, (cx0, cy0), P["shadow"], 0.12, 24 * s, (0, 10 * s))
-    else:  # reference E tiles 3-4: centred copy, full-width phone bottom-cropped, no ornament
-        b = head(H * 0.04)
+    else:  # reference E tiles 3-4: numbered step, centred copy, full-width phone bottom-cropped, no ornament
+        step = 1 + sum(1 for mm in project.messages_for(plat)[:idx] if mm["kind"] not in ("hero", "detail", "catalogue"))
+        b = head(H * 0.04, step)
         dev, _ = E.device(project.device_kind(plat), project.screen(plat, u["screen"]), W * 0.86 * dk)
         E.drop(cv, dev, ((W - dev.width) / 2, b + H * 0.04), P["shadow"], 0.18, 40 * s, (0, 24 * s))
     return cv

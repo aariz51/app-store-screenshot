@@ -22,9 +22,9 @@ def copy(project, m):
     o = project.copy_override(NAME, m)
     if isinstance(o, dict):
         return o["big"], o["small"]
-    ls = two_lines(m["headline"].upper())
-    small = (m.get("qualifier") or (ls[1] if len(ls) > 1 else m.get("sub", ""))).upper()
-    return ls[0], small
+    if m.get("qualifier"):
+        return m["headline"].upper(), m["qualifier"].upper()
+    return m["headline"].upper(), m.get("sub", "").upper().rstrip(".")
 
 
 def card(project, plat, spec, scale, maxw, **kw):
@@ -56,8 +56,9 @@ def tile(project, plat, m):
     dev, geo = E.device(project.device_kind(plat), project.screen(plat, u["screen"]), W * 0.80 * dk)
     dw = dev.width
     if not bottom:
-        y1 = E.text(cv, [([(big, None)], 1.0)], "anton", 250 * s, W * 0.06, H * 0.06, W * 0.88, align="center", lh=0.9)
-        y2 = E.text(cv, [([(small, None)], 1.0)], "anton", 92 * s, W * 0.10, y1 + 28 * s, W * 0.80, align="center", color=P["light"])
+        # reference C: wide heavy caps, up to 3 lines, then a lighter-blue qualifier
+        y1 = E.headline(cv, [(big, None)], "archivo-black", 196 * s, W * 0.06, H * 0.055, W * 0.88, max_lines=3, align="center", lh=0.95)
+        y2 = E.headline(cv, [(small, None)], "archivo-bold", 84 * s, W * 0.08, y1 + 30 * s, W * 0.84, max_lines=2, align="center", color=P["light"])
         E.blob(cv, W / 2, y2 + H * 0.33, W * 0.55, "#FFFFFF", 0.42, W * 0.14)
         dx, dy = (W - dw) / 2, y2 + H * 0.05
     else:
@@ -83,7 +84,8 @@ def tile(project, plat, m):
         ln = lens(project, plat, (u.get("chip") or u["callout"])[0], u["lens"], d, s)
         E.drop(cv, ln, (W * 0.40, cy - d * 0.3), P["shadow"], 0.4, 30 * s, (0, 24 * s))
         c = card(project, plat, u["callout"], 1.05 * dk, W * 0.94)
-        E.drop(cv, c, ((W - c.width) / 2, H * 0.80), P["shadow"], 0.35, 30 * s, (0, 24 * s))
+        if c.height <= H * 0.17:  # only a short, complete component fits under the lens
+            E.drop(cv, c, ((W - c.width) / 2, H * 0.97 - c.height), P["shadow"], 0.35, 30 * s, (0, 24 * s))
     else:
         cx, cy = E.map_box(geo, (dx, dy), u["anchor"])
         c = card(project, plat, u["callout"], (0.95 if kind == "list" else 1.05) * dk * (1.25 if bottom else 1.0), W * 0.94)
@@ -94,8 +96,8 @@ def tile(project, plat, m):
             t = E.badge_tile(W * 0.22, lab, "#FFFFFF", "#1B76F5").rotate(r, expand=True, resample=Image.BICUBIC)
             E.drop(cv, t, (W * x, H * 0.80), P["shadow"], 0.35, 24 * s, (0, 20 * s))
     if bottom:
-        y1 = E.text(cv, [([(big, None)], 1.0)], "anton", 250 * s, W * 0.06, H * 0.74, W * 0.88, align="center", lh=0.9)
-        E.text(cv, [([(small, None)], 1.0)], "anton", 92 * s, W * 0.10, y1 + 28 * s, W * 0.80, align="center", color=P["light"])
+        y1 = E.headline(cv, [(big, None)], "archivo-black", 196 * s, W * 0.06, H * 0.72, W * 0.88, max_lines=2, align="center", lh=0.95)
+        E.headline(cv, [(small, None)], "archivo-bold", 84 * s, W * 0.08, y1 + 30 * s, W * 0.84, max_lines=2, align="center", color=P["light"])
     E.grain(cv, 4)
     return cv
 

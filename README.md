@@ -9,7 +9,7 @@ Reference-driven App Store and Google Play screenshot generator. It turns your a
 - **Five independent design styles.** Each one is reverse-engineered from a real reference collection and has its own layouts, type, colour, depth and storytelling. They are not one template with different colours.
 - **Uses real UI only.** It crops, enlarges and frames your actual screenshots. It never invents screens or features.
 - **Finds existing raw screenshots** in your repo before suggesting a new capture.
-- **Simulator capture with permission.** The command asks before it boots a simulator, builds, installs or taps anything.
+- **Fresh simulator captures when needed.** If the repo's screenshots are missing or older than the UI code, the agent builds the app, launches the simulator and captures real screens itself.
 - **iOS and Android.** It draws generic, logo-free iPhone and Android frames in code and exports at store sizes (iPhone 6.9″ 1320×2868, Play phone 1080×1920 by default, both configurable).
 - **Reusable design system.** Includes design tokens, an archetype library, a style decision engine and a QA checklist.
 - **Built-in checks.** It verifies size, colour mode and alpha, and the command walks the agent through visually reviewing every image.
@@ -54,16 +54,19 @@ In any app repository, open Claude Code and run:
 
 ```
 /app-store-screenshots
-/app-store-screenshots dark-neon iphone
-/app-store-screenshots all both
+/app-store-screenshots iphone
 ```
+
+In Codex, use the `app-store-screenshots` skill or `/prompts:app-store-screenshots` (both installed by `install.sh`).
 
 The agent:
 1. reads the project and writes a feature inventory;
-2. finds existing raw screenshots, or **asks** before using a simulator;
+2. finds existing raw screenshots and checks they are current; if not, builds the app and captures fresh screens on a simulator;
 3. drafts a storyboard and a `store-assets/project.json`;
-4. **asks** which styles and platforms to render;
-5. renders, opens every image, fixes problems, and reports.
+4. renders all five styles for every platform;
+5. opens every image, fixes problems, and reports.
+
+It stops only for things it cannot do itself: a sign-in, a purchase, or a large download.
 
 Using the engine directly:
 
@@ -107,7 +110,7 @@ Raw screenshots are never changed. Re-running writes only inside the chosen outp
 
 ## Limitations
 
-- It is **not** fully automatic, on purpose. The agent stops for your approval before simulator or device control, before choosing styles, and before any download or clone.
+- It stops for sign-ins, purchases and large downloads (such as an emulator system image).
 - Crop boxes for UI callouts come from the agent (or you) measuring real screens. The engine does not detect UI components by itself.
 - Copy needs a human eye. Default headline line breaks and accent words are derived automatically, and per-style overrides are available.
 - Device frames are generic drawings, not official Apple or Google product images.

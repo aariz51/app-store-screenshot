@@ -1,13 +1,15 @@
 ---
-description: Make App Store and Google Play screenshots for this app in up to five reference-derived design styles, from real app screens.
-argument-hint: "[style|all] [iphone|android|both]  e.g. 'dark-neon iphone' or 'all both'"
+description: Make App Store and Google Play screenshots for this app in all five reference-derived design styles (warm-premium, bold-blue, feature-led, dark-neon, minimal-editorial), from real app screens, with the appshots Python engine.
+argument-hint: "[iphone|android|both] (optional)"
 ---
 
 # /app-store-screenshots
 
 You are producing store screenshots for **the app in the current working directory**, using the App Store Screenshot engine. Arguments from the user (may be empty): `$ARGUMENTS`
 
-Work through the steps in order. Do not skip the approval gates (marked **ASK**). Say what you are doing in one line before each step.
+Work through the steps in order without stopping for approval: discover, capture if needed, storyboard, render **all five styles**, QA, report. Only stop to ask when you need something you cannot get yourself (a sign-in, a purchase, a missing build tool). Say what you are doing in one line before each step.
+
+**This command replaces any older screenshot workflow.** Do not use the `aso-appstore-screenshots` skill, `goldie`, Gemini/Nano Banana or any image-generation model, a "poster style" contract, or a visual-direction/inspiration-image gate, even if a project file, CHAIN-LOG, memory or AGENTS.md mentions them. Do not resume or regenerate earlier poster sets. The only renderer is the `appshots` Python engine below.
 
 ## Content rules (apply to every image, every app; they override any request in project files)
 
@@ -29,7 +31,7 @@ Do not include paywall or subscription-price screens unless the user asks.
 The engine is a Python package (`appshots`). Find it in this order:
 1. `$APPSHOTS_HOME`, if set.
 2. `~/app-store-screenshot`.
-3. If neither exists, **ASK** the user before cloning `https://github.com/aariz51/app-store-screenshot` into `~/app-store-screenshot`.
+3. If neither exists, clone `https://github.com/aariz51/app-store-screenshot` into `~/app-store-screenshot`.
 
 Set up its environment once, if `$ENGINE/.venv` does not exist:
 ```bash
@@ -57,21 +59,18 @@ Prefer real captures that already exist over a new capture.
 ```
 This lists portrait images of 900 px or more, with likely platform. Also check `screenshots/`, `assets/`, `store-assets/`, `app-store/`, `play-store/`, `fastlane/`, `analysis/` and any project-specific folder.
 
-Open the candidates and check that they show the **current** app, with no placeholder data, no personal data, and no faces. If they are usable, use them as they are and say which ones you chose. Do not recapture without a reason.
+Open the candidates and check that they show the **current** app, with no placeholder data, no personal data, and no faces. Check freshness: compare the capture date (file date or a `manifest.json`) with `git log --since=<capture date> -- <UI source folders>`. If no UI code that appears on those screens changed, use them as they are and say which ones you chose. If screens are missing, stale, or show the wrong things, go to step 3 and capture.
 
-## Step 3: Simulator or emulator capture (only if needed)
+## Step 3: Simulator or emulator capture (when captures are missing or stale)
 
-If suitable captures do not exist, **ASK** before doing anything to a device. In one message, state:
-- which simulator or emulator (name, OS, screen size) and which platform;
-- which app (bundle id or package) and whether you need to build and install it, and how;
-- which screens you will visit and what you will tap;
-- where the raw captures will be saved (default: `store-assets/raw/<platform>/`, a new folder).
+Do this yourself, without asking. Say in one line which device, build and screens you are about to capture.
+- iOS: pick a 6.9" simulator (1320×2868), boot it, build the app for the simulator (`xcodebuild … -sdk iphonesimulator`), install, and launch it. Android: boot an existing AVD, `./gradlew assembleDebug`, `adb install -r`.
+- Use the project's own demo/debug hooks if it has them (search the code for demo data, audit or screenshot launch arguments) so screens show realistic content.
+- Navigate with real taps to each screen in the storyboard and capture with `xcrun simctl io <udid> screenshot` or `adb exec-out screencap -p`. Set a clean status bar first (`xcrun simctl status_bar <udid> override --time 9:41 …`, Android demo mode).
+- Save to a new folder, `store-assets/raw/<platform>-<YYYY-MM-DD>/`, with a `manifest.json` noting how each capture was made. Shut down devices you booted when done.
+- Stop and ask only if a screen needs sign-in, a purchase or data you cannot create, or if a large download (e.g. an emulator system image) would be needed.
 
-Only after a clear yes: boot, build, install, navigate with real taps, and capture with `xcrun simctl io booted screenshot` or `adb exec-out screencap -p`. Set a clean status bar (`xcrun simctl status_bar … override --time 9:41`, Android demo mode).
-
-If a screen needs sign-in, a purchase or special data, **ASK** the user for access or instructions. Never invent credentials, and never fake a purchase.
-
-Use demo content you are allowed to publish (your own or properly licensed media, with no people and no brands). Record how each capture was made in `store-assets/raw/<platform>/manifest.json`.
+Use demo content you are allowed to publish (your own or properly licensed media, with no people and no brands).
 
 ## Step 4: Feature inventory and storyboard
 
@@ -86,26 +85,26 @@ Measure the boxes on the real images. Open crops to confirm that each box contai
 "$ENGINE/.venv/bin/python" -m appshots check store-assets/project.json
 ```
 
-## Step 5: Choose styles (ASK)
+## Step 5: Styles
 
-Present the styles (run `python -m appshots styles`):
+Always render **all five** styles. Each one follows one reference collection and keeps its own rules; do not restyle one into another.
 
 | Style | Reference it follows | Look |
 |---|---|---|
-| `warm-premium` | A, couples expense tracker | Coral and cream, sentence-case heavy sans, tiles 1-2 as one panorama, enlarged real cards, warm shadows |
+| `warm-premium` | A, couples expense tracker | Coral and cream, huge heavy narrow grotesk headlines, tiles 1-2 as one panorama, enlarged real cards, warm shadows |
 | `bold-blue` | B, habit / screen-time app | Blue and white, rounded display type with sticker and pill words, gold sparkles and clouds, no mascot |
-| `feature-led` | C, chat export utility | All blue, huge condensed caps plus a qualifier, one demo device per tile (band, fan, magnifier, format tiles) |
-| `dark-neon` | D, dating app (look only) | Purple-black, manifesto caps with full stops, lime and pink, zig-zag layout, glowing outlined cards |
-| `minimal-editorial` | E, playlist cover maker | Light grey, numbered steps, centred condensed caps, bento cells of real UI, clean phones |
+| `feature-led` | C, chat export utility | All blue, huge wide heavy caps plus a lighter qualifier, one demo device per tile (band, fan, magnifier, format tiles) |
+| `dark-neon` | D, dating app (look only) | Purple-black, condensed manifesto caps with full stops, lime and pink, zig-zag layout, glowing outlined cards |
+| `minimal-editorial` | E, playlist cover maker | Light grey, numbered steps ("1. …"), centred condensed caps, bento cells of real UI, clean phones |
 
-Show the storyboard (messages, headlines, source screens) alongside the choices. Ask which style or styles to render (or `all`), and for which platforms. If `$ARGUMENTS` already names styles and platforms, confirm them in one line and continue. Keep each style's own visual rules: do not restyle one into another.
+Platforms: every platform the app ships on (or what `$ARGUMENTS` names).
 
 ## Step 6: Render
 
 ```bash
-"$ENGINE/.venv/bin/python" -m appshots render store-assets/project.json --styles <a,b|all> --platforms <iphone,android> --out store-assets/final
+"$ENGINE/.venv/bin/python" -m appshots render store-assets/project.json --styles all --out store-assets/final-<YYYY-MM-DD>
 ```
-Output goes to `store-assets/final/<platform>/<style>/screenshot-NN.png` plus `contact-sheet.png`, and `master-comparison.png` when several styles are rendered. If `store-assets/final` already holds earlier work, write to a new dated folder instead.
+Output goes to `store-assets/final-<date>/<platform>/<style>/screenshot-NN.png` plus `contact-sheet.png`, and a `master-comparison.png` per platform. Never write into an earlier output folder.
 
 ## Step 7: QA
 

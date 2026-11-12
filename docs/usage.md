@@ -4,13 +4,13 @@
 
 Run `/app-store-screenshots` in Claude Code from the root of an app repository. Optional arguments: a style name or `all`, then `iphone`, `android` or `both`.
 
-**Example 1: the repo already has screenshots.** The agent runs `discover`, opens the candidates, and says which it will use. It builds `store-assets/project.json`, shows the storyboard and asks which styles you want, then renders.
+**Example 1: the repo already has screenshots.** The agent runs `discover`, opens the candidates, and says which it will use. It builds `store-assets/project.json`, writes the storyboard, and renders all five styles.
 
-**Example 2: there are no screenshots.** The agent tells you which simulator, build, screens and output folder it plans to use, and waits for your yes. Then it captures real screens with a clean status bar. See [simulator-capture.md](simulator-capture.md).
+**Example 2: there are no screenshots, or they are stale.** The agent builds the app, boots a simulator and captures real screens with a clean status bar, then continues. See [simulator-capture.md](simulator-capture.md).
 
-**Example 3: one style.** Run `/app-store-screenshots dark-neon iphone`. You get six (or however many messages you have) iPhone screenshots plus a contact sheet.
+**Example 3: one platform.** Run `/app-store-screenshots iphone`. You get all five styles for iPhone plus `master-comparison.png`.
 
-**Example 4: all styles.** Run `/app-store-screenshots all both`. You get every style on both platforms, plus `master-comparison.png` per platform.
+To render a single style by hand, use the engine: `--styles dark-neon`.
 
 ## With the engine alone
 

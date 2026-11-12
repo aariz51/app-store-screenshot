@@ -25,6 +25,9 @@ _FONT_FILES = {
     "manrope": ("Manrope-Variable.ttf", 800),
     "manrope-sb": ("Manrope-Variable.ttf", 600),
     "manrope-md": ("Manrope-Variable.ttf", 500),
+    "archivo-sc": ("Archivo-Variable.ttf", (800, 88)),   # heavy, slightly narrow grotesk (reference A)
+    "archivo-black": ("Archivo-Variable.ttf", (900, 100)),  # wide heavy caps (reference C)
+    "archivo-bold": ("Archivo-Variable.ttf", (700, 100)),
 }
 _fc = {}
 
@@ -34,7 +37,9 @@ def font(name, px):
     if key not in _fc:
         file, weight = _FONT_FILES[name]
         f = ImageFont.truetype(os.path.join(FONTS, file), max(1, int(px)))
-        if weight:
+        if isinstance(weight, tuple):
+            f.set_variation_by_axes(list(weight))
+        elif weight:
             f.set_variation_by_axes([weight])
         _fc[key] = f
     return _fc[key]
@@ -251,6 +256,64 @@ def text(cv, lines, fname, size, x, y, maxw, align="left", lh=0.95, color="#FFFF
             cx += tw
         cy += cap + fs * (lh - 0.72)
     return cy
+
+
+def fit_wrap(spans, fname, size, maxw, max_lines=3, min_size=None):
+    """Wrap tagged spans at a FIXED display size (references keep type huge and break lines,
+    they do not shrink type to fit). Shrinks only if the text still needs more than max_lines.
+    Returns (lines, size) where lines is [[(text, tag), ...], ...]."""
+    _ends_space = True
+    # words are lists of (text, tag) segments; a span that does not start with a space
+    # glues onto the previous word, so "got" + "." stays "got." with its own colours
+    words = []
+    for t, g in spans:
+        parts = t.split(" ")
+        for i, w in enumerate(parts):
+            if not w:
+                continue
+            if i == 0 and words and not t.startswith(" ") and not _ends_space:
+                words[-1].append((w, g))
+            else:
+                words.append([(w, g)])
+        _ends_space = t.endswith(" ")
+    wtxt = lambda w: "".join(x for x, _ in w)
+    size = float(size)
+    min_size = min_size or size * 0.55
+    while True:
+        f = font(fname, size)
+        lines, cur = [], []
+        for w in words:
+            trial = cur + [w]
+            if cur and f.getlength(" ".join(wtxt(x) for x in trial)) > maxw:
+                lines.append(cur); cur = [w]
+            else:
+                cur = trial
+        if cur:
+            lines.append(cur)
+        widest = max(f.getlength(" ".join(wtxt(x) for x in l)) for l in lines)
+        if (len(lines) <= max_lines and widest <= maxw) or size <= min_size:
+            break
+        size *= 0.94
+    out = []
+    for l in lines:  # merge adjacent words with the same tag into spans, keeping spaces
+        sp = []
+        segs = []
+        for i, w in enumerate(l):
+            for j, (t, g) in enumerate(w):
+                segs.append((t + (" " if j == len(w) - 1 and i < len(l) - 1 else ""), g))
+        for t, g in segs:
+            if sp and sp[-1][1] == g:
+                sp[-1] = (sp[-1][0] + t, g)
+            else:
+                sp.append((t, g))
+        out.append(sp)
+    return out, size
+
+
+def headline(cv, spans, fname, size, x, y, maxw, max_lines=3, **kw):
+    """fit_wrap + text in one call. Returns bottom y."""
+    lines, fs = fit_wrap(spans, fname, size, maxw, max_lines)
+    return text(cv, [(l, 1.0) for l in lines], fname, fs, x, y, maxw, **kw)
 
 
 def para(cv, s, fname, px, x, y, maxw, color, align="left", lh=1.3, upper=False):
